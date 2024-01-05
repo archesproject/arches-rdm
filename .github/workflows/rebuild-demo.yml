@@ -1,0 +1,16 @@
+name: Deploy Demonstration Project
+on:
+  push:
+    branches:
+      - "deploy"
+jobs:
+  build:
+    name: Deploy demo project
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.DISPATCH_PAT }}
+          repository: fargeo/arches_rdm_example_project
+          event-type: deploy_project
