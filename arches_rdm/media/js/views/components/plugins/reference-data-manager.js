@@ -1,14 +1,16 @@
 import ko from 'knockout';
-import { createApp } from 'vue';
-import PrimeVue from 'primevue/config';
-import RDMApp from '@/App.vue';
-import RDMAppTepmlate from 'templates/views/components/plugins/reference-data-manager.htm';
+// import RDMVueApplication from '@/components/App.vue';
+import createVueApplication from 'utils/create-vue-application';
+import RDMAppTemplate from 'templates/views/components/plugins/reference-data-manager.htm';
+
+import packageJSON from 'arches_rdm/package.json'
+
 
 ko.components.register('reference-data-manager', {
     viewModel: function() {
-        const app = createApp(RDMApp);
-        app.use(PrimeVue);
-        app.mount('#rdm-mounting-point');
+        // createVueApplication(packageJSON.name, RDMVueApplication).then(vueApp => {
+        //     vueApp.mount('#rdm-mounting-point');
+        // });
     },
-    template: RDMAppTepmlate,
+    template: RDMAppTemplate,
 });

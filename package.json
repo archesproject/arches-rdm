@@ -1,11 +1,25 @@
 {
     "name": "arches_rdm",
+    "license": "AGPL-3.0-only",
     "version": "0.0.1",
+    "scripts": {
+        "eslint:check": "./arches_rdm/media/node_modules/.bin/eslint ./arches_rdm/src --resolve-plugins-relative-to ./arches_rdm/media --ext .vue,.ts --parser ./arches_rdm/media/node_modules/vue-eslint-parser/index.js",
+        "eslint:watch": "./arches_rdm/media/node_modules/.bin/nodemon --watch ./src --ext ts,vue --exec yarn --silent eslint:check",
+        "gettext:extract": "./arches_rdm/media/node_modules/.bin/vue-gettext-extract",
+        "gettext:compile": "./arches_rdm/media/node_modules/.bin/vue-gettext-compile",
+        "typescript:check": "./arches_rdm/media/node_modules/.bin/vue-tsc --noEmit",
+        "typescript:watch": "./arches_rdm/media/node_modules/.bin/vue-tsc --watch --noEmit"
+    },
     "dependencies": {
-        "primevue": "^3.35.0"
+        "vue": "^3.3.4",
+        "vue3-gettext": "^3.0.0-beta.4"
     },
     "devDependencies": {
+        "arches-dev-dependencies": "archesproject/arches-dev-dependencies#dev/7.6.x"
     },
     "nodeModulesPaths": {
+    },
+    "resolutions": {
+        "node-gyp": "^10.0.0"
     }
 }

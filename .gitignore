@@ -1,4 +1,12 @@
-*.egg-info
 *.pyc
 *.log
-*.DS_Store
+arches_rdm/logs
+arches_rdm/export_deliverables
+arches_rdm/staticfiles
+arches_rdm/media/node_modules
+arches_rdm/media/build/*
+arches_rdm/uploadedfiles/*
+.vscode/
+*.egg-info
+.DS_STORE
+CACHE
