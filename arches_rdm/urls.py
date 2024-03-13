@@ -15,9 +15,11 @@ Including another URLconf
 """
 from django.urls import include, path
 
-from arches_rdm.views import ConceptTreeView
+from arches_rdm import views
 
 urlpatterns = [
     path("", include("arches.urls")),
-    path("concept_trees/", ConceptTreeView.as_view(), name="concept_trees"),
+    path("login/", views.UserView.as_view(), name="login"),
+    path("csrf/", views.CsrfView.as_view(), name="csrf"),
+    path("concept_trees/", views.ConceptTreeView.as_view(), name="concept_trees"),
 ]

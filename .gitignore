@@ -2,3 +2,4 @@
 *.pyc
 *.log
 *.DS_Store
+arches_rdm/node_modules
