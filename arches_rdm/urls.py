@@ -13,7 +13,11 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import path
+from django.urls import include, path
 
+from arches_rdm.views import ConceptTreeView
 
-urlpatterns = []
+urlpatterns = [
+    path("", include("arches.urls")),
+    path("concept_trees/", ConceptTreeView.as_view(), name="concept_trees"),
+]
