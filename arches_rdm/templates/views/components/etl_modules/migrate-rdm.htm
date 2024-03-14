@@ -1,0 +1,92 @@
+{% load i18n %}
+
+{% block task_details %}
+<!-- ko ifnot: loading() -->
+<!-- ko if: activeTab() === 'details' -->
+<div class="etl-module-component-container">
+    <div class="etl-module-body">
+        <h2>RDM Migrator</h2>
+        <p class="pad-btm">
+            {% blocktrans %}Migrates concepts and schemes from the Reference Data Manager to Arches for Vocabularies models{% endblocktrans %}
+        </p>
+        <p class="pad-btm">
+            {% blocktrans %}Click the start button to initiate the process for migrating concepts and schemes from the existing RDM to the Lingo resource models. You will need to have Celery running if your instance has more than 500 concepts.{% endblocktrans %}
+        </p>
+    </div>
+    <div class="tabbed-workflow-footer, etl-module-footer">
+        <button class="btn btn-success" style="margin-right: 8px;" data-bind="click: runRDMMigration">
+            <span data-bind="text: $root.translations.start"></span>
+        </button>
+    </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+{% endblock task_details %}
+
+{% block loading_status %}
+<!-- ko ifnot: loading() -->
+<div class="bulk-load-status">
+    <h4 class="summary-title">{% trans "RDM to Arches-Lingo Migrator Summary" %}</h4>
+    <div>
+        <span class="etl-loading-metadata-key" data-bind="text: $root.translations.loadingStatus + ':'"></span>
+        <span class="etl-loading-metadata-value" data-bind="
+            text:
+                selectedLoadEvent().status == 'indexed' ? $root.translations.completed
+                : selectedLoadEvent().status == 'completed' ? $root.translations.indexing
+                : selectedLoadEvent().status == 'validated' ? $root.translations.running
+                : selectedLoadEvent().status == 'running' ? $root.translations.validating
+                : selectedLoadEvent().status == 'reversing' ? $root.translations.unloading
+                : selectedLoadEvent().status == 'unloaded' ? $root.translations.unloaded
+                : selectedLoadEvent().status == 'cancelled' ? $root.translations.cancelled
+                : $root.translations.failed
+        "></span>  
+    </div>
+    <div style="padding-top: 10px;">
+        <span class="etl-loading-metadata-key" data-bind="text: $root.translations.loadingStarted + ':'"></span>
+        <span class="etl-loading-metadata-value" data-bind="text: formatTime(selectedLoadEvent().load_start_time)"></span>    
+    </div>
+    <div data-bind="if: selectedLoadEvent().load_end_time">
+        <span class="etl-loading-metadata-key" data-bind="text: $root.translations.loadingEnded + ':'"></span>
+        <span class="etl-loading-metadata-value" data-bind="text: formatTime(selectedLoadEvent().load_end_time)"></span>    
+    </div>
+    <div data-bind="if: selectedLoadEvent().load_end_time">
+        <span class="etl-loading-metadata-key" data-bind="text: $root.translations.loadDuration + ':'"></span>
+        <span class="etl-loading-metadata-value" data-bind="text: timeDifference(selectedLoadEvent().load_end_time, selectedLoadEvent().load_start_time)"></span>    
+    </div>
+    <div style="padding-top: 10px;" data-bind="if: selectedLoadEvent().indexed_time">
+        <span class="etl-loading-metadata-key" data-bind="text: $root.translations.indexingEnded + ':'"></span>
+        <span class="etl-loading-metadata-value" data-bind="text: formatTime(selectedLoadEvent().indexed_time)"></span>    
+    </div>
+    <div data-bind="if: selectedLoadEvent().indexed_time">
+        <span class="etl-loading-metadata-key" data-bind="text: $root.translations.indexingDuration + ':'"></span>
+        <span class="etl-loading-metadata-value" data-bind="text: timeDifference(selectedLoadEvent().indexed_time, selectedLoadEvent().load_end_time)"></span>    
+    </div>
+    
+    <!-- ko if: loadDetails.number_of_import -->
+    <div class="bulk-load-status" style="padding: 5px 0">
+        <h4 class="summary-header">
+            <span data-bind="text: $root.translations.importedData"></span>
+            <span>
+                <a class="etl-status-link" target="_blank"
+                    data-bind="text: '('+$root.translations.viewInEditLog+')', attr: { href: editHistoryUrl }">
+                </a>
+            </span>
+        </h4>
+        <div>
+            <!-- ko foreach: loadDetails.number_of_import -->
+            <span class="etl-loading-metadata-key" data-bind="text: $data.name + ' ' + $root.translations.instances + ':'"></span>
+            <span class="etl-loading-metadata-value" data-bind="text: $data.total"></span>
+            <!-- ko foreach: $data.tiles -->
+            <div style="padding-left: 20px;">
+                <span class="etl-loading-metadata-key" data-bind="text: $data.tile + ':'"></span>
+                <span class="etl-loading-metadata-value" data-bind="text: $data.count"></span>
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+        </div>
+    </div>  
+    <!-- /ko -->
+</div>
+<!-- /ko -->
+{% endblock loading_status %}
+
