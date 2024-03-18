@@ -54,7 +54,7 @@ class JsonbArrayElements(Func):
 
 
 @method_decorator(
-    group_required("RDM Administrator", raise_exception=True), name="dispatch"
+    group_required("RDM Administrator"), name="dispatch"
 )
 class ConceptTreeView(View):
     def __init__(self):

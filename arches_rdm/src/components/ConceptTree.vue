@@ -10,7 +10,7 @@ import Tree from "primevue/tree";
 
 import LetterCircle from "@/components/LetterCircle.vue";
 
-import { bestLabel } from "@/utils";
+import { bestLabel } from "@/utils.ts";
 
 import type { Ref } from "vue";
 import type {
@@ -51,8 +51,6 @@ const SCHEME_LABEL = $gettext("Scheme");
 const CONCEPT_LABEL = $gettext("Concept");
 const FOCUS = $gettext("Focus");
 const UNFOCUS = $gettext("Unfocus");
-
-import { DJANGO_HOST } from "@/main";
 
 const onSelect = (node: TreeNode) => {
     selectedNode.value = node;
@@ -177,9 +175,8 @@ const toggleFocus = (node: TreeNode) => {
 
 const fetchSchemes = async () => {
     let errorText;
-    const url = new URL("concept_trees/", DJANGO_HOST);
     try {
-        const response = await fetch(url, { credentials: "include" });
+        const response = await fetch("/concept_trees/", { credentials: "include" });
         if (!response.ok) {
             errorText = response.statusText;
             const body = await response.json();

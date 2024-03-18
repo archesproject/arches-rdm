@@ -6,8 +6,6 @@ import Cookies from "js-cookie";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 
-import { DJANGO_HOST } from "@/main.ts";
-
 const { $gettext } = useGettext();
 
 const isAuthenticated = defineModel();
@@ -15,7 +13,7 @@ const username = ref();
 const password = ref();
 
 const setCsrfToken = async () => {
-    await fetch(new URL("/csrf/", DJANGO_HOST)).then(
+    await fetch("/csrf/").then(
         async (response) => {
             const data = await response.json();
             Cookies.set("csrftoken", data.csrftoken);
@@ -28,7 +26,6 @@ const submit = async () => {
         await setCsrfToken();
     }
 
-    const url = new URL("/login/", DJANGO_HOST);
     const requestOptions = {
         method: "POST",
         credentials: "include",
@@ -44,7 +41,7 @@ const submit = async () => {
 
     let errorText;
     try {
-        const response = await fetch(url, requestOptions);
+        const response = await fetch("/login/", requestOptions);
         if (response.ok) {
             // const data = await response.json();
             isAuthenticated.value = true;

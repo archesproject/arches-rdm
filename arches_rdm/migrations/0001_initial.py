@@ -1,7 +1,5 @@
-from arches.app.models import models
-
-
-from django.db import migrations, models
+from django.db import migrations
+from django.utils.translation import gettext as _
 
 
 class Migration(migrations.Migration):
@@ -15,22 +13,20 @@ class Migration(migrations.Migration):
     def add_plugins(apps, schema_editor):
         Plugin = apps.get_model("models", "Plugin")
 
-        Plugin.objects.update_or_create(
+        Plugin(
             pluginid="29321ce0-bd95-4357-a2a5-822e9cb06f70",
-            name="Reference Data Manager (RDM)",
+            name=_("Lingo"),
             icon="fa fa-code-fork",
-            component="views/components/plugins/reference-data-manager",
-            componentname="reference-data-manager",
-            config={},
-            slug="reference-data-manager",
-            sortorder=0
-        )
+            component="App.vue",
+            componentname="lingo",
+            config={"show": True, "is_standalone": True},
+            slug="lingo",
+            sortorder=0,
+        ).save()
 
     def remove_plugin(apps, schema_editor):
         Plugin = apps.get_model("models", "Plugin")
-
-        for plugin in Plugin.objects.filter(pluginid__in=["29321ce0-bd95-4357-a2a5-822e9cb06f70"]):
-            plugin.delete()
+        Plugin.objects.filter(slug="lingo").delete()
 
     operations = [
         migrations.RunPython(add_plugins, remove_plugin),
